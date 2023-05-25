@@ -1,15 +1,16 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <TableGrid />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TableGrid from './components/TableGrid.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TableGrid
   }
 }
 </script>
