@@ -18,12 +18,14 @@
 
   <!-- 上をtableの形にしてみる -->
   <table>
-    <tbody v-for="row in marubatsuList" :key="row">
+    <tbody v-for="(row, i) in marubatsuList" :key="row">
       <tr>
-        <td v-for="ox in row" :key="ox">{{ ox }}</td>
+        <td v-for="(ox, j) in row" :key="ox" @click="setmarubatsu(i, j)">{{ ox }}</td>
       </tr>
     </tbody>
   </table>
+  <!-- vforのindexをとる
+    https://qiita.com/shin_moto/items/85dd2ed2f7341592da73 -->
   <!-- table書き方例 
   <table>
     <tbody>
@@ -45,6 +47,11 @@ export default {
   data() {
     return {
       marubatsuList: [['o', 'x', 'o'], ['x', 'o', 'x'], ['o', 'x', 'x']],
+    }
+  },
+  methods: {
+    setmarubatsu(i, j) {
+      this.marubatsuList[i][j] = "a"
     }
   }
 }
