@@ -1,8 +1,8 @@
 <template>
   <table>
-    <tbody v-for="(row, i) in marubatsuList" :key="row">
+    <tbody v-for="(row, i) in marubatsuList" :key="i">
       <tr>
-        <td v-for="(ox, j) in row" :key="ox" @click="setmarubatsu(i, j)">{{ ox }}</td>
+        <td v-for="(ox, j) in row" :key="j" @click="setmarubatsu(i, j)">{{ ox }}</td>
       </tr>
     </tbody>
   </table>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { sayHello } from '@/common/hello.js'
 export default {
   name: 'MarubatsuArea',
   data() {
@@ -32,6 +33,7 @@ export default {
           this.turn = "o"
         }
       }
+      sayHello()
     },
 
   }
