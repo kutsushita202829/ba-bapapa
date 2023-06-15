@@ -1,15 +1,15 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <MarubatsuArea />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// import TableGrid from './components/TableGrid.vue'
+import MarubatsuArea from './components/MarubatsuArea.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // TableGrid
+    MarubatsuArea
   }
 }
 </script>
