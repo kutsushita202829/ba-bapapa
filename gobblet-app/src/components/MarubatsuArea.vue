@@ -2,39 +2,56 @@
   <table>
     <tbody v-for="(row, i) in marubatsuList" :key="i">
       <tr>
-        <td v-for="(ox, j) in row" :key="j" @click="setmarubatsu(i, j)">{{ ox }}</td>
+        <td v-for="(ox, j) in row" :key="j" @click="clickCell(i, j)">{{ ox }}</td>
       </tr>
     </tbody>
   </table>
-
+  <p>te: {{ stock.value }}</p>
+<!--
   <p v-if="turn == 'o'">〇のターンです</p>
   <p v-else>✕のターンです</p>
+  -->
 </template>
 
 <script>
-import { sayHello } from '@/common/hello.js'
 export default {
   name: 'MarubatsuArea',
   data() {
     return {
-      marubatsuList: [['', '', ''], ['', '', ''], ['', '', '']],
-      turn: "o"
+      marubatsuList: [['o', '', ''], ['', '', ''], ['', '', '']],
+      turn: "o",
+      stock: {
+        i: 0,
+        j: 0,
+        value: ""
+      }
     }
   },
   methods: {
-    setmarubatsu(i, j) {
-      if (!this.marubatsuList[i][j]) {
-        if (this.turn == "o") {
-          this.marubatsuList[i][j] = "o"
-          this.turn = "x"
-        }
-        else if (this.turn == "x") {
-          this.marubatsuList[i][j] = "x"
-          this.turn = "o"
-        }
+    clickCell(i, j) {
+      if (this.stock.value) {
+        this.hanasu(i, j)
       }
-      sayHello()
+      else {
+        this.motsu(i, j)
+      }
     },
+
+    motsu(i, j) {
+      if (this.marubatsuList[i][j]) {
+        this.stock.value = this.marubatsuList[i][j]
+        this.stock.i = i
+        this.stock.j = j
+      }
+    },
+
+    hanasu(i, j) {
+      if (!this.marubatsuList[i][j]) {
+        this.marubatsuList[this.stock.i][this.stock.j] = ""
+        this.marubatsuList[i][j] = this.stock.value
+        this.stock.value = ""
+      }
+    }
 
   }
 }
