@@ -2,7 +2,7 @@
   <table>
     <tbody v-for="(row, i) in marubatsuList" :key="i">
       <tr>
-        <td v-for="(ox, j) in row" :key="j" @click="clickCell(i, j)">{{ ox }}</td>
+        <td v-for="(ox, j) in row" :key="j" :class="{ active: isActive(i, j)}" @click="clickCell(i, j)">{{ ox }}</td>
       </tr>
     </tbody>
   </table>
@@ -21,8 +21,8 @@ export default {
       marubatsuList: [['o', '', ''], ['', '', ''], ['', '', '']],
       turn: "o",
       stock: {
-        i: 0,
-        j: 0,
+        i: null,
+        j: null,
         value: ""
       }
     }
@@ -50,6 +50,14 @@ export default {
         this.marubatsuList[this.stock.i][this.stock.j] = ""
         this.marubatsuList[i][j] = this.stock.value
         this.stock.value = ""
+        this.stock.i = null
+        this.stock.j = null
+      }
+    },
+
+    isActive(i, j) {
+      if (i == this.stock.i && j == this.stock.j) {
+        return true;
       }
     }
 
@@ -67,5 +75,9 @@ td {
   height: 80px;
   width: 80px;
   text-align: center;
+}
+
+.active {
+  background: yellow;
 }
 </style>
