@@ -2,13 +2,13 @@
   <table>
     <tbody>
       <tr>
-        <td class="temochi" v-for="(temochiA, i) in temochiListA" :key="i"> {{ temochiA }}</td>
+        <td class="temochi" v-for="(temochiA, i) in temochiListA" :key="i"> {{ temochiA.size }}</td>
       </tr>
     </tbody>
   </table>
 
   <table>
-    <tbody v-for="(row, i) in marubatsuList" :key="i">
+    <tbody v-for="(row, i) in boardList" :key="i">
       <tr>
         <td v-for="(ox, j) in row" :key="j" @click="setmarubatsu(i, j)">{{ ox }}</td>
       </tr>
@@ -18,40 +18,49 @@
   <table>
     <tbody>
       <tr>
-        <td class="temochi" v-for="(temochiB, i) in temochiListB" :key="i"> {{ temochiB }}</td>
+        <td class="temochi" v-for="(temochiB, i) in temochiListB" :key="i"> {{ temochiB.size }}</td>
       </tr>
     </tbody>
   </table>
-
   <p v-if="turn == 'o'">〇のターンです</p>
   <p v-else>✕のターンです</p>
+  {{ temochi }}
 </template>
 
 <script>
 import { sayHello } from '@/common/hello.js'
+import { Koma, createTemochiKomaList } from '@/common/koma.js'
+
 export default {
   name: 'MarubatsuArea',
   data() {
     return {
-      marubatsuList: [['', '', ''], ['', '', ''], ['', '', '']],
+      boardList: [['', '', ''], ['', '', ''], ['', '', '']],
       turn: "o",
-      temochiListA: ['大', '大', '中', '中', '小', '小'],
-      temochiListB: ['', '大', '中', '中', '', '小'],
+      temochiListA: createTemochiKomaList(),
+      temochiListB: createTemochiKomaList(),
+      temochi: null
     }
   },
   methods: {
+    setKoma() {
+
+      const childKoma = new Koma({ size: "small", child: null })
+      this.temochi = new Koma({ size: "big", child: childKoma })
+    },
     setmarubatsu(i, j) {
-      if (!this.marubatsuList[i][j]) {
+      if (!this.boardList[i][j]) {
         if (this.turn == "o") {
-          this.marubatsuList[i][j] = "o"
+          this.boardList[i][j] = "o"
           this.turn = "x"
         }
         else if (this.turn == "x") {
-          this.marubatsuList[i][j] = "x"
+          this.boardList[i][j] = "x"
           this.turn = "o"
         }
       }
       sayHello()
+      this.setKoma()
     },
 
   }
