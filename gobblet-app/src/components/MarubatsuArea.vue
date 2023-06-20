@@ -11,8 +11,8 @@
   <table>
     <tbody v-for="(row, i) in boardList" :key="i">
       <tr>
-        <td class="masu" :class="{ active: isActive(i, j) }" v-for="(ox, j) in row" :key="j" @click="clickCell(i, j)">{{
-          ox.color }}</td>
+        <td class="masu" :class="{ active: isActive(i, j) }" v-for="(ox, j) in row" :key="j" @click="clickCell(i, j)">
+          {{ ox.color }}</td>
       </tr>
     </tbody>
   </table>
@@ -134,5 +134,9 @@ table {
   height: 80px;
   width: 80px;
   text-align: center;
+}
+
+.active {
+  background-color: yellow;
 }
 </style>
