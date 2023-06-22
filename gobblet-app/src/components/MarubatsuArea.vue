@@ -97,6 +97,23 @@ export default {
     },
 
     hanasu(i, j) {
+
+      // はなせるのはboardにだけ
+      //if (!this.boardList[i][j]) {
+
+      //  if (this.boardList[this.stock.i][this.stock.j].child == null) {
+      //    this.boardList[this.stock.i][this.stock.j] = ""
+      //  } else {
+      //    this.boardList[this.stock.i][this.stock.j] = this.boardList[this.stock.i][this.stock.j].child
+      //  }
+
+      //  this.boardList[i][j] = this.stock.value
+      //  this.stock.value = ""
+      //  this.stock.i = null
+      //  this.stock.j = null
+      //  // this.setmarubatsu(i, j)
+      //  }
+
       this.boardList[i][j] = this.stock.value
       if (this.stock.j) {
         this.boardList[this.stock.i][this.stock.j] = ""
