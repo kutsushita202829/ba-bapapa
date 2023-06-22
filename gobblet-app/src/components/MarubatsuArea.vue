@@ -3,7 +3,10 @@
     <table class="temochi__table">
       <tbody>
         <tr>
-          <td class="temochi__each" v-for="(temochiA, i) in temochiListA" :key="i"> {{ temochiA.size }}</td>
+          <td class="temochi__each" v-for="(temochiA, i) in temochiListA" :key="i">
+            <img v-if="temochiA.size != null" class="komaimg"
+              :src="require(`@/assets/images/${komaImgFilename(temochiA.color, temochiA.size)}`)" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -12,7 +15,9 @@
     <tbody v-for="(row, i) in boardList" :key="i">
       <tr>
         <td class="masu" :class="{ active: isActive(i, j) }" v-for="(ox, j) in row" :key="j" @click="clickCell(i, j)">
-          {{ ox.color }}</td>
+          <img v-if="ox.size != null" class="komaimg"
+            :src="require(`@/assets/images/${komaImgFilename(ox.color, ox.size)}`)" />
+        </td>
       </tr>
     </tbody>
   </table>
@@ -20,7 +25,11 @@
     <table class="temochi__table">
       <tbody>
         <tr>
-          <td class="temochi__each" v-for="(temochiB, i) in temochiListB" :key="i"> {{ temochiB.size }}</td>
+          <td class="temochi__each" v-for="(temochiB, i) in temochiListB" :key="i">
+
+            <img v-if="temochiB.size != null" class="komaimg"
+              :src="require(`@/assets/images/${komaImgFilename(temochiB.color, temochiB.size)}`)" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -38,7 +47,7 @@ export default {
   name: 'MarubatsuArea',
   data() {
     return {
-      boardList: [[new Koma({ size: "small", color: "red", child: null }), '', ''], ['', '', ''], ['', '', '']],
+      boardList: [[new Koma({ size: "1", color: "red", child: null }), '', ''], ['', '', ''], ['', '', '']],
       turn: "o",
       temochiListA: createTemochiKomaList("red"),
       temochiListB: createTemochiKomaList("blue"),
@@ -54,7 +63,7 @@ export default {
     setmarubatsu(i, j) {
       if (!this.boardList[i][j]) {
         if (this.turn == "o") {
-          this.boardList[i][j] = new Koma({ size: "small", color: "red", child: new Koma({ size: "small", color: "red", child: null }) })
+          this.boardList[i][j] = new Koma({ size: "1", color: "red", child: new Koma({ size: "1", color: "red", child: null }) })
           this.turn = "x"
         }
         else if (this.turn == "x") {
@@ -104,8 +113,13 @@ export default {
       if (i == this.stock.i && j == this.stock.j) {
         return true;
       }
+    },
+    komaImgFilename(color, size) {
+      const filename = `${color}_${size}.png`
+      return filename
     }
-
+    // 置けるか判定
+    ,
   }
 }
 </script>
@@ -120,6 +134,11 @@ table {
   height: 80px;
   width: 80px;
   text-align: center;
+}
+
+.komaimg {
+  height: 80px;
+  width: 80px;
 }
 
 .temochi {
