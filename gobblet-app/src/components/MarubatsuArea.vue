@@ -35,7 +35,7 @@
     </table>
   </div>
 
-  <p v-if="isRedTurn">red のターンです</p>
+  <p v-if="turn == 'red'">red のターンです</p>
   <p v-else>blue のターンです</p>
 </template>
 
@@ -47,13 +47,13 @@ export default {
   data() {
     return {
       boardList: [['', '', ''], ['', '', ''], ['', '', '']],
-      isRedTurn: true,
+      turn: 'red',
       temochiListA: createTemochiKomaList("red"),
       temochiListB: createTemochiKomaList("blue"),
       stock: {
         i: null,
         j: null,
-        value: "" // Koma型になる！
+        value: '' // Koma型になる！
       }
     }
   },
@@ -74,25 +74,31 @@ export default {
     },
 
     temochiMotsu(i) {
-      if (this.isRedTurn) {
+      if (this.turn == 'red') {
         if (this.temochiListA[i]) {
-          this.stock.value = this.temochiListA[i]
-          this.stock.i = i
+          if (this.temochiListA[i].color == 'red') {
+            this.stock.value = this.temochiListA[i]
+            this.stock.i = i
+          }
         }
       }
       else {
         if (this.temochiListB[i]) {
-          this.stock.value = this.temochiListB[i]
-          this.stock.i = i
+          if (this.temochiListB[i].color == 'blue') {
+            this.stock.value = this.temochiListB[i]
+            this.stock.i = i
+          }
         }
       }
     },
 
     motsu(i, j) {
       if (this.boardList[i][j]) {
-        this.stock.value = this.boardList[i][j]
-        this.stock.i = i
-        this.stock.j = j
+        if (this.boardList[i][j].color == this.turn) {
+          this.stock.value = this.boardList[i][j]
+          this.stock.i = i
+          this.stock.j = j
+        }
       }
     },
 
@@ -119,7 +125,7 @@ export default {
         this.boardList[this.stock.i][this.stock.j] = ""
       }
       else {
-        if (this.isRedTurn) {
+        if (this.turn == 'red') {
           this.temochiListA[this.stock.i] = ""
         }
         else {
@@ -129,7 +135,12 @@ export default {
       this.stock.value = ""
       this.stock.i = null
       this.stock.j = null
-      this.isRedTurn = !this.isRedTurn
+      if (this.turn == 'red') {
+        this.turn = 'blue'
+      }
+      else {
+        this.turn = 'red'
+      }
     },
 
     isActive(i, j) {
