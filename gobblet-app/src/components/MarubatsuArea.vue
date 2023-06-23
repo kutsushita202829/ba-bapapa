@@ -3,7 +3,8 @@
     <table class="temochi__table">
       <tbody>
         <tr>
-          <td class="temochi__each" v-for="(temochiA, i) in temochiListA" :key="i" @click="clickTemochi(i)">
+          <td class="temochi__each" :class="{ active: turn == 'red' ? isTemochiActive(i) : '' }"
+            v-for="(temochiA, i) in temochiListA" :key="i" @click="turn == 'red' ? clickTemochi(i) : ''">
             <img v-if="temochiA.size != null" class="komaimg"
               :src="require(`@/assets/images/${komaImgFilename(temochiA.color, temochiA.size)}`)" />
           </td>
@@ -25,7 +26,8 @@
     <table class="temochi__table">
       <tbody>
         <tr>
-          <td class="temochi__each" v-for="(temochiB, i) in temochiListB" :key="i" @click="clickTemochi(i)">
+          <td class="temochi__each" :class="{ active: turn == 'blue' ? isTemochiActive(i) : '' }"
+            v-for="(temochiB, i) in temochiListB" :key="i" @click="turn == 'blue' ? clickTemochi(i) : ''">
 
             <img v-if="temochiB.size != null" class="komaimg"
               :src="require(`@/assets/images/${komaImgFilename(temochiB.color, temochiB.size)}`)" />
@@ -121,9 +123,11 @@ export default {
       //  }
 
       this.boardList[i][j] = this.stock.value
-      if (this.stock.j) {
+      // boardからboardに移動
+      if (this.stock.j != null) {
         this.boardList[this.stock.i][this.stock.j] = ""
       }
+      // 手持ちからboardに移動
       else {
         if (this.turn == 'red') {
           this.temochiListA[this.stock.i] = ""
@@ -145,6 +149,11 @@ export default {
 
     isActive(i, j) {
       if (i == this.stock.i && j == this.stock.j) {
+        return true;
+      }
+    },
+    isTemochiActive(i) {
+      if (i == this.stock.i && this.stock.j == null) {
         return true;
       }
     },
