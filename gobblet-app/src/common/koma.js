@@ -10,11 +10,11 @@ export class Koma {
 
 export const createTemochiKomaList = (color) => {
   return [
-    new Koma({ size: "big", color: color, place: "temochi" }),
-    new Koma({ size: "big", color: color, place: "temochi" }),
-    new Koma({ size: "nomal", color: color, place: "temochi" }),
-    new Koma({ size: "nomal", color: color, place: "temochi" }),
-    new Koma({ size: "small", color: color, place: "temochi" }),
-    new Koma({ size: "small", color: color, place: "temochi" }),
+    new Koma({ size: "3", color: color, place: "temochi" }),
+    new Koma({ size: "3", color: color, place: "temochi" }),
+    new Koma({ size: "2", color: color, place: "temochi" }),
+    new Koma({ size: "2", color: color, place: "temochi" }),
+    new Koma({ size: "1", color: color, place: "temochi" }),
+    new Koma({ size: "1", color: color, place: "temochi" }),
   ];
 };

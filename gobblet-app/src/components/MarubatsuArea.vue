@@ -3,7 +3,10 @@
     <table class="temochi__table">
       <tbody>
         <tr>
-          <td class="temochi__each" v-for="(temochiA, i) in temochiListA" :key="i"> {{ temochiA.size }}</td>
+          <td class="temochi__each" v-for="(temochiA, i) in temochiListA" :key="i" @click="clickTemochi(i)">
+            <img v-if="temochiA.size != null" class="komaimg"
+              :src="require(`@/assets/images/${komaImgFilename(temochiA.color, temochiA.size)}`)" />
+          </td>
         </tr>
       </tbody>
     </table>
@@ -11,8 +14,10 @@
   <table>
     <tbody v-for="(row, i) in boardList" :key="i">
       <tr>
-        <td class="masu" :class="{ active: isActive(i, j) }" v-for="(ox, j) in row" :key="j" @click="clickCell(i, j)">
-          {{ ox.color }}</td>
+        <td class="masu" :class="{ active: isActive(i, j) }" v-for="(ox, j) in row" :key="j" @click="clickBoard(i, j)">
+          <img v-if="ox.size != null" class="komaimg"
+            :src="require(`@/assets/images/${komaImgFilename(ox.color, ox.size)}`)" />
+        </td>
       </tr>
     </tbody>
   </table>
@@ -20,83 +25,121 @@
     <table class="temochi__table">
       <tbody>
         <tr>
-          <td class="temochi__each" v-for="(temochiB, i) in temochiListB" :key="i"> {{ temochiB.size }}</td>
+          <td class="temochi__each" v-for="(temochiB, i) in temochiListB" :key="i" @click="clickTemochi(i)">
+
+            <img v-if="temochiB.size != null" class="komaimg"
+              :src="require(`@/assets/images/${komaImgFilename(temochiB.color, temochiB.size)}`)" />
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <p v-if="turn == 'o'">〇のターンです</p>
-  <p v-else>✕のターンです</p>
-  {{ temochi }}
+  <p v-if="turn == 'red'">red のターンです</p>
+  <p v-else>blue のターンです</p>
 </template>
 
 <script>
-import { Koma, createTemochiKomaList } from '@/common/koma.js'
+import { createTemochiKomaList } from '@/common/koma.js'
 
 export default {
   name: 'MarubatsuArea',
   data() {
     return {
-      boardList: [[new Koma({ size: "small", color: "red", child: null }), '', ''], ['', '', ''], ['', '', '']],
-      turn: "o",
+      boardList: [['', '', ''], ['', '', ''], ['', '', '']],
+      turn: 'red',
       temochiListA: createTemochiKomaList("red"),
       temochiListB: createTemochiKomaList("blue"),
-      temochi: null,
       stock: {
         i: null,
         j: null,
-        value: "" // Koma型になる！
+        value: '' // Koma型になる！
       }
     }
   },
   methods: {
-    setmarubatsu(i, j) {
-      if (!this.boardList[i][j]) {
-        if (this.turn == "o") {
-          this.boardList[i][j] = new Koma({ size: "small", color: "red", child: new Koma({ size: "small", color: "red", child: null }) })
-          this.turn = "x"
-        }
-        else if (this.turn == "x") {
-          this.boardList[i][j] = "x"
-          this.turn = "o"
-        }
-      }
-    },
-    clickCell(i, j) {
+    clickBoard(i, j) {
       if (this.stock.value) {
         this.hanasu(i, j)
-
       }
       else {
         this.motsu(i, j)
       }
+    },
 
+    clickTemochi(i) {
+      if (!this.stock.value) {
+        this.temochiMotsu(i)
+      }
+    },
+
+    temochiMotsu(i) {
+      if (this.turn == 'red') {
+        if (this.temochiListA[i]) {
+          if (this.temochiListA[i].color == 'red') {
+            this.stock.value = this.temochiListA[i]
+            this.stock.i = i
+          }
+        }
+      }
+      else {
+        if (this.temochiListB[i]) {
+          if (this.temochiListB[i].color == 'blue') {
+            this.stock.value = this.temochiListB[i]
+            this.stock.i = i
+          }
+        }
+      }
     },
 
     motsu(i, j) {
       if (this.boardList[i][j]) {
-        this.stock.value = this.boardList[i][j]
-        this.stock.i = i
-        this.stock.j = j
+        if (this.boardList[i][j].color == this.turn) {
+          this.stock.value = this.boardList[i][j]
+          this.stock.i = i
+          this.stock.j = j
+        }
       }
     },
 
     hanasu(i, j) {
+
       // はなせるのはboardにだけ
-      if (!this.boardList[i][j]) {
+      //if (!this.boardList[i][j]) {
 
-        if (this.boardList[this.stock.i][this.stock.j].child == null) {
-          this.boardList[this.stock.i][this.stock.j] = ""
-        } else {
-          this.boardList[this.stock.i][this.stock.j] = this.boardList[this.stock.i][this.stock.j].child
+      //  if (this.boardList[this.stock.i][this.stock.j].child == null) {
+      //    this.boardList[this.stock.i][this.stock.j] = ""
+      //  } else {
+      //    this.boardList[this.stock.i][this.stock.j] = this.boardList[this.stock.i][this.stock.j].child
+      //  }
+
+      //  this.boardList[i][j] = this.stock.value
+      //  this.stock.value = ""
+      //  this.stock.i = null
+      //  this.stock.j = null
+      //  // this.setmarubatsu(i, j)
+      //  }
+
+      this.boardList[i][j] = this.stock.value
+      if (this.stock.j) {
+        this.boardList[this.stock.i][this.stock.j] = ""
+      }
+      else {
+        if (this.turn == 'red') {
+          this.temochiListA[this.stock.i] = ""
         }
-
-        this.boardList[i][j] = this.stock.value
-        this.stock.value = ""
-        this.stock.i = null
-        this.stock.j = null
-        // this.setmarubatsu(i, j)
+        else {
+          this.temochiListB[this.stock.i] = ""
+        }
+      }
+      this.stock.value = ""
+      this.stock.i = null
+      this.stock.j = null
+      if (this.turn == 'red') {
+        this.turn = 'blue'
+      }
+      else {
+        this.turn = 'red'
       }
     },
 
@@ -104,8 +147,13 @@ export default {
       if (i == this.stock.i && j == this.stock.j) {
         return true;
       }
+    },
+    komaImgFilename(color, size) {
+      const filename = `${color}_${size}.png`
+      return filename
     }
-
+    // 置けるか判定
+    ,
   }
 }
 </script>
@@ -120,6 +168,11 @@ table {
   height: 80px;
   width: 80px;
   text-align: center;
+}
+
+.komaimg {
+  height: 80px;
+  width: 80px;
 }
 
 .temochi {
