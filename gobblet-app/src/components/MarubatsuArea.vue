@@ -105,27 +105,16 @@ export default {
     },
 
     hanasu(i, j) {
-
-      // はなせるのはboardにだけ
-      //if (!this.boardList[i][j]) {
-
-      //  if (this.boardList[this.stock.i][this.stock.j].child == null) {
-      //    this.boardList[this.stock.i][this.stock.j] = ""
-      //  } else {
-      //    this.boardList[this.stock.i][this.stock.j] = this.boardList[this.stock.i][this.stock.j].child
-      //  }
-
-      //  this.boardList[i][j] = this.stock.value
-      //  this.stock.value = ""
-      //  this.stock.i = null
-      //  this.stock.j = null
-      //  // this.setmarubatsu(i, j)
-      //  }
-
-      this.boardList[i][j] = this.stock.value
       // boardからboardに移動
       if (this.stock.j != null) {
-        this.boardList[this.stock.i][this.stock.j] = ""
+        // stockのchildに駒があったら、元いたマスに置く
+        if (this.stock.value.child) {
+          this.boardList[this.stock.i][this.stock.j] = this.stock.value.child
+          this.stock.value.child = null
+        }
+        else {
+          this.boardList[this.stock.i][this.stock.j] = ""
+        }
       }
       // 手持ちからboardに移動
       else {
@@ -136,6 +125,14 @@ export default {
           this.temochiListB[this.stock.i] = ""
         }
       }
+
+      // 置こうとしているマスに既に駒があったら、自分のchildに格納
+      if (this.boardList[i][j]) {
+        this.stock.value.child = this.boardList[i][j]
+      }
+      // 駒を放す
+      this.boardList[i][j] = this.stock.value
+
       this.stock.value = ""
       this.stock.i = null
       this.stock.j = null
