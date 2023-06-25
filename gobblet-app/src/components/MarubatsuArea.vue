@@ -62,7 +62,9 @@ export default {
   methods: {
     clickBoard(i, j) {
       if (this.stock.value) {
-        this.hanasu(i, j)
+        if ((!this.boardList[i][j]) || (this.stock.value.size > this.boardList[i][j].size)) {
+          this.hanasu(i, j)
+        }
       }
       else {
         this.motsu(i, j)
